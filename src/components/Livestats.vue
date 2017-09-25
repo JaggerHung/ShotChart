@@ -34,20 +34,19 @@
             <div class="col-md-8 basketball_court" >
               <svg v-on:click="getShotPosition" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
               	 viewBox="-86.2 173.3 786.5 442.2" enable-background="new -86.2 173.3 786.5 442.2" xml:space="preserve">
-                  <g id="2pts_area" v-on:click="addTwoPoints">
-                   <path fill="none" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M-86.3,209.2h39l-3,0.1
+                  <g class="2pts_area" v-on:click="addTwoPoints">
+                   <path fill="rgba(0,0,0,0" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M-86.3,209.2h39l-3,0.1
                      C0,207.5,48.9,226.4,85,261.4s56.5,83.3,56.3,133.6v-1.4c0.2,50.3-20.1,98.6-56.3,133.6S0,581.1-50.3,579.3l3,0.1h-39"></path>
                   </g>
-                  <g id="2pts_area" v-on:click="addTwoPoints">
-                   <path fill="none" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M700,209.2h-39l3,0.1
+                  <g class="2pts_area" v-on:click="addTwoPoints">
+                   <path fill="rgba(0,0,0,0" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M700,209.2h-39l3,0.1
                     c-50.3-1.8-99.2,17.1-135.3,52.1s-56.5,83.3-56.3,133.6v-1.4c-0.2,50.3,20.1,98.6,56.3,133.6c36.1,35,85,53.9,135.3,52.1l-3,0.1h39"></path>
                  </g>
-                  </g>
                   <path fill="none" stroke="#073763" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M-43.8,360.3L-43.8,360.3
                      c0.2,0,0.5,0,0.7,0"/>
                   <path fill="none" stroke="#073763" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M657.6,360.3L657.6,360.3
                        c-0.2,0-0.5,0-0.7,0"/>
-                  <path fill="none" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M-87.1,615.5V173.3
+                  <path class="" v-on:click="" fill="none" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M-87.1,615.5V173.3
                   	h787.4v442.2H-87.1z"/>
                   <path fill="none" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M306.6,629.4V160.7"/>
                   <path fill="none" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M306.6,445.1L306.6,445.1
@@ -134,6 +133,10 @@ export default {
   name: 'Livestats',
   data () {
     return {
+      score: {
+        home_team_score: '',
+        away_team_score: ''
+      },
       players: Store.fetch('players'),
       InstantPlays: Store.fetch('InstantPlays'),
       selectdPlayer: [],
@@ -156,7 +159,7 @@ export default {
       this.selectdPlayer = player
     },
     getShotPosition: function (e) {
-      console.log(e)
+      console.log(e.path[1].classList.value)
       const createdtime = new Date()
       const chosenOne = this.selectdPlayer
       const posx = e.offsetX ? (e.offsetX) : e.pageX - document.getElementById('basketball_court').offsetLeft
@@ -171,10 +174,17 @@ export default {
         posy: posy,
         createdtime: createdtime
       })
+      if (e.path[1].classList.value === '2pts_area') {
+        console.log(2)
+      } else {
+        console.log(3)
+      }
     },
     addNewInstantPlay: function () {
     },
     addTwoPoints: function () {
+    },
+    addThreePoints: function () {
     }
   },
   watch: {
