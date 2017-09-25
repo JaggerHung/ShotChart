@@ -2,10 +2,10 @@
     <div class="">
       <div class="row">
         <div class="col-md-6">
-          <h1>HomeScore</h1>
+          <h1>HomeScore: {{score.home_team_score}}</h1>
         </div>
         <div class="col-md-6">
-          <h1>AwayScore</h1>
+          <h1>AwayScore: {{score.away_team_score}}</h1>
         </div>
         <div class="col-md-2">
           <table class="table">
@@ -32,13 +32,13 @@
               >{{player.jerseyNumber}}</b-button>
             </div>
             <div class="col-md-8 basketball_court" >
-              <svg v-on:click="getShotPosition" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+              <svg v-on:click="addNewInstantPlay" version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
               	 viewBox="-86.2 173.3 786.5 442.2" enable-background="new -86.2 173.3 786.5 442.2" xml:space="preserve">
-                  <g class="2pts_area" v-on:click="addTwoPoints">
+                  <g class="2pts_area">
                    <path fill="rgba(0,0,0,0" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M-86.3,209.2h39l-3,0.1
                      C0,207.5,48.9,226.4,85,261.4s56.5,83.3,56.3,133.6v-1.4c0.2,50.3-20.1,98.6-56.3,133.6S0,581.1-50.3,579.3l3,0.1h-39"></path>
                   </g>
-                  <g class="2pts_area" v-on:click="addTwoPoints">
+                  <g class="2pts_area">
                    <path fill="rgba(0,0,0,0" stroke="#000000" stroke-width="2" stroke-linejoin="round" stroke-miterlimit="10" d="M700,209.2h-39l3,0.1
                     c-50.3-1.8-99.2,17.1-135.3,52.1s-56.5,83.3-56.3,133.6v-1.4c-0.2,50.3,20.1,98.6,56.3,133.6c36.1,35,85,53.9,135.3,52.1l-3,0.1h39"></path>
                  </g>
@@ -134,8 +134,8 @@ export default {
   data () {
     return {
       score: {
-        home_team_score: '',
-        away_team_score: ''
+        home_team_score: 0,
+        away_team_score: 0
       },
       players: Store.fetch('players'),
       InstantPlays: Store.fetch('InstantPlays'),
@@ -158,33 +158,35 @@ export default {
     selectPlayer: function (player) {
       this.selectdPlayer = player
     },
-    getShotPosition: function (e) {
-      console.log(e.path[1].classList.value)
+    addNewInstantPlay: function (e) {
       const createdtime = new Date()
       const chosenOne = this.selectdPlayer
       const posx = e.offsetX ? (e.offsetX) : e.pageX - document.getElementById('basketball_court').offsetLeft
       const posy = e.offsetY ? (e.offsetY) : e.pageY - document.getElementById('basketball_court').offsetTop
+      if (e.path[1].classList.value === '2pts_area' && chosenOne.team === 'home') {
+        this.playtype = '2pts_in'
+        this.score.home_team_score += 2
+      } else if (e.path[1].classList.value !== '2pts_area' && chosenOne.team === 'home') {
+        this.playtype = '3pts_in'
+        this.score.home_team_score += 3
+      }
+      if (e.path[1].classList.value === '2pts_area' && chosenOne.team === 'away') {
+        this.playtype = '2pts_in'
+        this.score.away_team_score += 2
+      } else if (e.path[1].classList.value !== '2pts_area' && chosenOne.team === 'away') {
+        this.playtype = '3pts_in'
+        this.score.away_team_score += 3
+      }
       this.InstantPlays.push({
         player_id: chosenOne.id,
         name: chosenOne.name,
         jerseyNumber: chosenOne.jerseyNumber,
         team: chosenOne.team,
-        playtype: '',
-        posx: posx,
-        posy: posy,
-        createdtime: createdtime
+        playtype: this.playtype,
+        posx,
+        posy,
+        createdtime
       })
-      if (e.path[1].classList.value === '2pts_area') {
-        console.log(2)
-      } else {
-        console.log(3)
-      }
-    },
-    addNewInstantPlay: function () {
-    },
-    addTwoPoints: function () {
-    },
-    addThreePoints: function () {
     }
   },
   watch: {
@@ -216,7 +218,7 @@ export default {
   border: none;
   font-size: 2.0rem;
   border-radius: 4px;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.3rem;
   box-shadow: 2px 2px 3px rgba(0,0,0,.1);
   font-weight: 500;
   font-family: Questrial,sans-serif;
