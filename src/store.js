@@ -1,9 +1,9 @@
-const STORAGE_KEY = 'players-vuejs'
+
 export default {
-  fetch () {
+  fetch (STORAGE_KEY) {
     return JSON.parse(window.localStorage.getItem(STORAGE_KEY) || '[ ]')
   },
-  save (items) {
+  save (STORAGE_KEY, items) {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
   }
 }

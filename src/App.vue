@@ -32,6 +32,5 @@ export default {
 #basketball_court {
   border: 0px;
   width: 100%;
-  background-color: #f05a28;
 }
 </style>
