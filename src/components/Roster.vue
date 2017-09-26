@@ -63,7 +63,7 @@
           <!-- Add Player Modal Component End -->
           <!-- Update Player Modal Component -->
           <b-modal id="modal2" title="Update Player" v-on:ok="doneEdit, submit" @shown="clearSpace">
-            <form @submit.stop.prevent="submit">
+            <form @submit.stop.prevent="doneEdit">
               <div class="row">
                 <div class="col-md-3">
                   <b-form-input min="0" type="number" placeholder="#" v-model="this.editedPlayer.jerseyNumber"></b-form-input>
@@ -94,7 +94,7 @@
       return {
         players: Store.fetch('players'),
         newPlayerId: Store.fetch('newPlayerId'),
-        editedPlayer: '',
+        editedPlayer: [],
         newPlayer: {
           id: '',
           jerseyNumber: '',
@@ -132,13 +132,13 @@
       editPlayer: function (player) {
         this.beforeEditCache = player
         this.editedPlayer = player
-        console.log(player)
       },
       doneEdit: function (player) {
-        if (!this.editedPlayer) {
-          this.player = this.editedPlayer
-          this.player.save()
-        }
+        // if (!this.editedPlayer) {
+        //   this.player = this.editedPlayer
+        //   Store.save('players', this.player)
+        // }
+        console.log(this.player)
       }
     },
     watch: {

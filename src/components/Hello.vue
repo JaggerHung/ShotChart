@@ -1,15 +1,15 @@
-<template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-  </div>
-</template>
+var Child = {
+  template: '  <div class="hello">
+                <h1>{{ msg }}</h1>
+              </div>'
+}
 
 <script>
 export default {
   name: 'Hello',
   data () {
     return {
-      msg: ''
+      msg: '1234'
     }
   }
 }
